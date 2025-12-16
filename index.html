@@ -3,211 +3,530 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Matle - Enciclopedia Informatica</title>
+    <title>Matle Pro - Enciclopedia Informatica</title>
     <style>
-        /* RESET & BASE */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            line-height: 1.6;
-            background: #f5f7fa;
-            color: #333;
+        /* ====== VARIABILI & RESET ====== */
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #1e40af;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --light: #f8fafc;
+            --dark: #1e293b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --radius-lg: 12px;
+            --transition: all 0.3s ease;
         }
-        
-        /* HEADER */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        /* ====== HEADER ====== */
         .header {
             background: white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            padding: 1rem 0;
+            box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 1000;
+            border-bottom: 3px solid var(--primary);
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
         }
-        
+
         .header-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            flex-wrap: wrap;
+            padding: 1rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
             gap: 1rem;
         }
-        
-        .logo h1 {
-            font-size: 2.5rem;
-            color: #2c3e50;
+
+        .logo-icon {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 0.2rem;
         }
-        
-        .logo p {
-            color: #7f8c8d;
+
+        .logo-text p {
             font-size: 0.9rem;
+            color: var(--gray);
         }
-        
-        /* NAV */
-        .nav-main ul {
+
+        /* ====== AUTH FORMS ====== */
+        .auth-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .auth-box {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .auth-tabs {
             display: flex;
-            list-style: none;
-            gap: 0.5rem;
-            flex-wrap: wrap;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--gray-light);
         }
-        
+
+        .auth-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--gray);
+        }
+
+        .auth-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--accent);
+        }
+
+        .btn-success:hover {
+            background: #0da271;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+
+        .btn-block {
+            width: 100%;
+            display: block;
+        }
+
+        /* ====== USER MENU ====== */
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .user-role {
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        .logout-btn {
+            padding: 0.5rem 1rem;
+            background: var(--gray-light);
+            color: var(--dark);
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        /* ====== NAVIGATION ====== */
+        .nav-main {
+            display: flex;
+            gap: 0.5rem;
+        }
+
         .nav-main a {
             padding: 0.5rem 1rem;
             text-decoration: none;
-            color: #333;
-            border-radius: 5px;
-            background: #ecf0f1;
-            transition: all 0.3s;
+            color: var(--dark);
+            border-radius: var(--radius);
+            font-weight: 500;
+            transition: var(--transition);
         }
-        
+
         .nav-main a:hover,
         .nav-main a.active {
-            background: #3498db;
+            background: var(--primary);
             color: white;
         }
-        
-        /* SEARCH */
-        .search-box {
-            display: flex;
-            background: white;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            overflow: hidden;
-            margin-top: 1rem;
+
+        /* ====== EDITOR ====== */
+        .editor-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .search-box input {
+
+        .editor-box {
+            background: white;
+            border-radius: var(--radius-lg);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .editor-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .editor-body {
             flex: 1;
-            padding: 0.8rem;
-            border: none;
-            outline: none;
+            padding: 1.5rem;
+            overflow-y: auto;
         }
-        
-        .search-box button {
-            background: #3498db;
-            color: white;
+
+        .editor-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gray-light);
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+
+        .editor-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ====== ARTICLES ====== */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .article-actions {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .article-card:hover .article-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             border: none;
-            padding: 0 1.5rem;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
         }
-        
-        /* MAIN */
-        .main-content {
-            padding: 2rem 0;
-            min-height: 70vh;
+
+        .edit-btn {
+            background: var(--secondary);
+            color: white;
         }
-        
-        /* LOADING */
+
+        .delete-btn {
+            background: var(--danger);
+            color: white;
+        }
+
+        .article-category {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .article-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .article-meta {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+        }
+
+        .article-content {
+            color: var(--dark);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* ====== DASHBOARD ====== */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .sidebar {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* ====== FOOTER ====== */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* ====== UTILITY ====== */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+
+        /* ====== LOADING ====== */
         .loading {
             text-align: center;
             padding: 3rem;
             background: white;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow);
         }
-        
+
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-light);
+            border-top: 4px solid var(--primary);
             border-radius: 50%;
             animation: spin 1s linear infinite;
             margin: 0 auto 1rem;
         }
-        
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-        
-        /* ARTICLES */
-        .articles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .article-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        
-        .article-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .article-card h3 {
-            color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-        
-        .article-meta {
-            color: #7f8c8d;
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-        
-        .article-content {
-            color: #555;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-        
-        .read-more {
-            display: inline-block;
-            background: #3498db;
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 600;
-            border: none;
-            cursor: pointer;
-        }
-        
-        /* SINGLE ARTICLE */
-        .single-article {
-            background: white;
-            border-radius: 10px;
-            padding: 2rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        
-        .single-article h2 {
-            color: #2c3e50;
-            margin-bottom: 1rem;
-        }
-        
-        /* FOOTER */
-        .footer {
-            background: #2c3e50;
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
-        /* RESPONSIVE */
-        @media (max-width: 768px) {
-            .header-content {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .articles-grid {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -217,28 +536,115 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <h1>Matle</h1>
-                    <p>Enciclopedia Informatica</p>
+                    <div class="logo-icon">📚</div>
+                    <div class="logo-text">
+                        <h1>Matle Pro</h1>
+                        <p>Enciclopedia Informatica</p>
+                    </div>
                 </div>
-                
+
                 <nav class="nav-main">
-                    <ul>
-                        <li><a href="#" onclick="loadHome()" class="active">Home</a></li>
-                        <li><a href="#" onclick="loadAllArticles()">Articoli</a></li>
-                        <li><a href="#" onclick="loadAbout()">About</a></li>
-                    </ul>
+                    <a href="#" onclick="loadHome()" class="active">Home</a>
+                    <a href="#" onclick="loadArticles()">Articoli</a>
+                    <a href="#" onclick="loadCategories()">Categorie</a>
+                    <a href="#" onclick="loadAbout()">About</a>
                 </nav>
-            </div>
-            
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Cerca articoli...">
-                <button onclick="searchArticles()">🔍 Cerca</button>
+
+                <div class="user-menu" id="userMenu">
+                    <div class="btn" onclick="showLogin()">Accedi</div>
+                </div>
             </div>
         </div>
     </header>
 
-    <!-- MAIN -->
-    <main class="container main-content">
+    <!-- AUTH FORMS -->
+    <div class="auth-container" id="authContainer">
+        <div class="auth-box">
+            <div class="auth-tabs">
+                <div class="auth-tab active" onclick="showAuthTab('login')">Accedi</div>
+                <div class="auth-tab" onclick="showAuthTab('register')">Registrati</div>
+            </div>
+
+            <form class="auth-form active" id="loginForm" onsubmit="login(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-block">Accedi</button>
+            </form>
+
+            <form class="auth-form" id="registerForm" onsubmit="register(event)">
+                <div class="form-group">
+                    <label for="regName">Nome</label>
+                    <input type="text" id="regName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="regConfirmPassword">Conferma Password</label>
+                    <input type="password" id="regConfirmPassword" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-block btn-success">Registrati</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- EDITOR -->
+    <div class="editor-container" id="editorContainer">
+        <div class="editor-box">
+            <div class="editor-header">
+                <h3 id="editorTitle">Nuovo Articolo</h3>
+                <button class="btn btn-danger" onclick="hideEditor()">✕</button>
+            </div>
+            <div class="editor-body">
+                <div class="editor-grid">
+                    <div class="form-group">
+                        <label for="editTitle">Titolo</label>
+                        <input type="text" id="editTitle" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editCategory">Categoria</label>
+                        <select id="editCategory" class="form-control">
+                            <option value="programmazione">Programmazione</option>
+                            <option value="algoritmi">Algoritmi</option>
+                            <option value="database">Database</option>
+                            <option value="reti">Reti</option>
+                            <option value="web">Web</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAuthor">Autore</label>
+                        <input type="text" id="editAuthor" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTags">Tag (separati da virgola)</label>
+                        <input type="text" id="editTags" class="form-control" placeholder="python, programmazione, tutorial">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="editContent">Contenuto</label>
+                    <textarea id="editContent" class="form-control" rows="10" required></textarea>
+                </div>
+            </div>
+            <div class="editor-footer">
+                <button class="btn" onclick="hideEditor()">Annulla</button>
+                <button class="btn btn-success" onclick="saveArticle()">Salva Articolo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
         <div id="content">
             <div class="loading" id="loading">
                 <div class="spinner"></div>
@@ -250,92 +656,364 @@
     <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
-            <p style="text-align: center;">Matle © 2024 - Creato da Angelini Matteo</p>
-            <p style="text-align: center; margin-top: 0.5rem; font-size: 0.9rem;">
-                Articoli: <span id="articleCount">0</span> | 
-                Ultimo aggiornamento: <span id="updateDate">...</span>
-            </p>
+            <div class="footer-content">
+                <div>
+                    <h3 style="color: white;">Matle Pro</h3>
+                    <p>Enciclopedia informatica avanzata con sistema di gestione completo.</p>
+                </div>
+                <div>
+                    <h3 style="color: white;">Statistiche</h3>
+                    <p id="footerStats">Caricamento...</p>
+                </div>
+                <div>
+                    <h3 style="color: white;">Sviluppatore</h3>
+                    <p>Angelini Matteo<br>Versione 3.0 Pro</p>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2024 Matle Pro - Enciclopedia Informatica. Sistema di gestione avanzato.</p>
+            </div>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT -->
     <script>
+        // ============================================
         // CONFIGURAZIONE
-        const SHEETS = {
-            articoli: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSujCY6DDQ2WDcJ8OfRQcJqUP7T_obac8KMCe7Oi4k14zzrj9zV5lwhryLvb7q8KqLRWxI2C4iIwtf-/pub?gid=0&single=true&output=csv",
-            categorie: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQIcNtVhlDB951QxufPk581mgRZUByqXColhlHBEF_csJbeUAJ98Lzv3tnlMn_Q-AiuQCvRv403UPLQ/pub?gid=0&single=true&output=csv",
-            autori: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTuJdqm3iA2sGWaMLmhPly5ltn8qoABw7hY2SfEw_JMHtBulSWdK0mrzhnY4d6LjH8V1aoblfSc2e0Q/pub?gid=0&single=true&output=csv"
+        // ============================================
+        const CONFIG = {
+            googleSheets: {
+                articoli: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSujCY6DDQ2WDcJ8OfRQcJqUP7T_obac8KMCe7Oi4k14zzrj9zV5lwhryLvb7q8KqLRWxI2C4iIwtf-/pub?gid=0&single=true&output=csv",
+                categorie: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQIcNtVhlDB951QxufPk581mgRZUByqXColhlHBEF_csJbeUAJ98Lzv3tnlMn_Q-AiuQCvRv403UPLQ/pub?gid=0&single=true&output=csv",
+                autori: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTuJdqm3iA2sGWaMLmhPly5ltn8qoABw7hY2SfEw_JMHtBulSWdK0mrzhnY4d6LjH8V1aoblfSc2e0Q/pub?gid=0&single=true&output=csv"
+            },
+            storageKey: 'matle_pro_data',
+            usersKey: 'matle_users',
+            currentUserKey: 'matle_current_user'
         };
 
+        // ============================================
+        // VARIABILI GLOBALI
+        // ============================================
         let articoli = [];
         let categorie = [];
+        let autori = [];
+        let currentUser = null;
+        let editingArticleId = null;
+        let users = [];
 
-        // CARICA DATI
+        // ============================================
+        // SISTEMA AUTH
+        // ============================================
+
+        function initAuth() {
+            // Carica utenti da localStorage
+            const savedUsers = localStorage.getItem(CONFIG.usersKey);
+            users = savedUsers ? JSON.parse(savedUsers) : [
+                {
+                    id: 1,
+                    name: "Admin",
+                    email: "admin@matle.it",
+                    password: "admin123",
+                    role: "admin",
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            // Carica utente corrente
+            const savedUser = localStorage.getItem(CONFIG.currentUserKey);
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateUserMenu();
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('authContainer').style.display = 'flex';
+            showAuthTab('login');
+        }
+
+        function hideAuth() {
+            document.getElementById('authContainer').style.display = 'none';
+        }
+
+        function showAuthTab(tab) {
+            // Aggiorna tabs
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            
+            // Attiva tab selezionato
+            if (tab === 'login') {
+                document.querySelector('.auth-tab:nth-child(1)').classList.add('active');
+                document.getElementById('loginForm').classList.add('active');
+            } else {
+                document.querySelector('.auth-tab:nth-child(2)').classList.add('active');
+                document.getElementById('registerForm').classList.add('active');
+            }
+        }
+
+        function login(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = {
+                    id: user.id,
+                    name: user.name,
+                    email: user.email,
+                    role: user.role
+                };
+                
+                // Salva in localStorage
+                localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(currentUser));
+                
+                // Aggiorna interfaccia
+                updateUserMenu();
+                hideAuth();
+                showNotification('Login effettuato con successo!', 'success');
+                loadDashboard();
+            } else {
+                showNotification('Email o password errati', 'error');
+            }
+        }
+
+        function register(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            // Validazione
+            if (password !== confirmPassword) {
+                showNotification('Le password non coincidono', 'error');
+                return;
+            }
+            
+            if (users.some(u => u.email === email)) {
+                showNotification('Email già registrata', 'error');
+                return;
+            }
+            
+            // Crea nuovo utente
+            const newUser = {
+                id: users.length + 1,
+                name: name,
+                email: email,
+                password: password,
+                role: 'user',
+                createdAt: new Date().toISOString()
+            };
+            
+            users.push(newUser);
+            localStorage.setItem(CONFIG.usersKey, JSON.stringify(users));
+            
+            // Login automatico
+            currentUser = {
+                id: newUser.id,
+                name: newUser.name,
+                email: newUser.email,
+                role: newUser.role
+            };
+            
+            localStorage.setItem(CONFIG.currentUserKey, JSON.stringify(currentUser));
+            updateUserMenu();
+            hideAuth();
+            showNotification('Registrazione completata!', 'success');
+            loadDashboard();
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem(CONFIG.currentUserKey);
+            updateUserMenu();
+            showNotification('Logout effettuato', 'success');
+            loadHome();
+        }
+
+        function updateUserMenu() {
+            const userMenu = document.getElementById('userMenu');
+            
+            if (currentUser) {
+                const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                
+                userMenu.innerHTML = `
+                    <div class="user-avatar">${initials}</div>
+                    <div class="user-info">
+                        <div class="user-name">${currentUser.name}</div>
+                        <div class="user-role">${currentUser.role === 'admin' ? 'Amministratore' : 'Utente'}</div>
+                    </div>
+                    <button class="logout-btn" onclick="logout()">Esci</button>
+                    ${currentUser.role === 'admin' ? '<button class="btn" onclick="showEditor()">+ Nuovo Articolo</button>' : ''}
+                `;
+            } else {
+                userMenu.innerHTML = '<div class="btn" onclick="showLogin()">Accedi</div>';
+            }
+        }
+
+        // ============================================
+        // EDITOR ARTICOLI
+        // ============================================
+
+        function showEditor(articleId = null) {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            
+            editingArticleId = articleId;
+            const editor = document.getElementById('editorContainer');
+            const title = document.getElementById('editorTitle');
+            
+            if (articleId) {
+                // Modifica articolo esistente
+                title.textContent = 'Modifica Articolo';
+                const article = articoli.find(a => a.id == articleId);
+                
+                if (article) {
+                    document.getElementById('editTitle').value = article.titolo || article.Titolo || '';
+                    document.getElementById('editCategory').value = article.categoria || article.Categoria || 'programmazione';
+                    document.getElementById('editAuthor').value = article.autore || article.Autore || currentUser.name;
+                    document.getElementById('editTags').value = article.tags || article.Tags || '';
+                    document.getElementById('editContent').value = article.contenuto || article.Contenuto || '';
+                }
+            } else {
+                // Nuovo articolo
+                title.textContent = 'Nuovo Articolo';
+                document.getElementById('editTitle').value = '';
+                document.getElementById('editCategory').value = 'programmazione';
+                document.getElementById('editAuthor').value = currentUser.name;
+                document.getElementById('editTags').value = '';
+                document.getElementById('editContent').value = '';
+            }
+            
+            editor.style.display = 'flex';
+        }
+
+        function hideEditor() {
+            document.getElementById('editorContainer').style.display = 'none';
+            editingArticleId = null;
+        }
+
+        async function saveArticle() {
+            if (!currentUser) {
+                showNotification('Devi essere loggato per salvare articoli', 'error');
+                return;
+            }
+            
+            const article = {
+                titolo: document.getElementById('editTitle').value,
+                categoria: document.getElementById('editCategory').value,
+                autore: document.getElementById('editAuthor').value,
+                tags: document.getElementById('editTags').value,
+                contenuto: document.getElementById('editContent').value,
+                data: new Date().toISOString().split('T')[0], // YYYY-MM-DD
+                slug: document.getElementById('editTitle').value
+                    .toLowerCase()
+                    .replace(/[^a-z0-9]+/g, '-')
+                    .replace(/(^-|-$)/g, '')
+            };
+            
+            // Simulazione salvataggio (in una versione reale, qui faremmo una chiamata API)
+            if (editingArticleId) {
+                // Aggiorna articolo esistente
+                const index = articoli.findIndex(a => a.id == editingArticleId);
+                if (index !== -1) {
+                    articoli[index] = { ...articoli[index], ...article };
+                }
+            } else {
+                // Nuovo articolo
+                article.id = articoli.length > 0 ? Math.max(...articoli.map(a => parseInt(a.id) || 0)) + 1 : 1;
+                articoli.unshift(article);
+            }
+            
+            // Salva in cache locale
+            saveToCache();
+            
+            hideEditor();
+            showNotification('Articolo salvato con successo!', 'success');
+            loadArticles();
+        }
+
+        function deleteArticle(articleId) {
+            if (!confirm('Sei sicuro di voler eliminare questo articolo?')) return;
+            
+            articoli = articoli.filter(a => a.id != articleId);
+            saveToCache();
+            showNotification('Articolo eliminato', 'success');
+            loadArticles();
+        }
+
+        // ============================================
+        // GESTIONE DATI
+        // ============================================
+
         async function loadData() {
             showLoading();
             
             try {
-                console.log("🔄 Caricamento dati...");
+                // Carica dati da Google Sheets
+                const [articoliData, categorieData, autoriData] = await Promise.all([
+                    loadCSV(CONFIG.googleSheets.articoli),
+                    loadCSV(CONFIG.googleSheets.categorie),
+                    loadCSV(CONFIG.googleSheets.autori)
+                ]);
                 
-                // Carica articoli
-                const articoliText = await fetch(SHEETS.articoli).then(r => r.text());
-                console.log("📄 Articoli RAW:", articoliText.substring(0, 200));
+                articoli = articoliData;
+                categorie = categorieData;
+                autori = autoriData;
                 
-                articoli = parseCSV(articoliText);
-                console.log("✅ Articoli parsati:", articoli.length);
-                console.log("📋 Primi articoli:", articoli.slice(0, 3));
+                // Carica dati salvati localmente
+                const cachedData = localStorage.getItem(CONFIG.storageKey);
+                if (cachedData) {
+                    const localArticles = JSON.parse(cachedData);
+                    // Unisci articoli locali con quelli da Google Sheets
+                    articoli = [...articoli, ...localArticles];
+                }
                 
-                // Aggiorna contatori
-                document.getElementById('articleCount').textContent = articoli.length;
-                document.getElementById('updateDate').textContent = new Date().toLocaleDateString('it-IT');
-                
+                // Aggiorna statistiche
+                updateStats();
                 loadHome();
                 
             } catch (error) {
-                console.error("❌ Errore:", error);
-                showError("Errore caricamento dati: " + error.message);
+                console.error('Errore caricamento dati:', error);
+                showNotification('Errore nel caricamento dei dati', 'error');
             }
         }
 
-        // PARSER CSV SEMPLICE
-        function parseCSV(text) {
-            // Pulisci il testo
-            let cleanText = text.trim();
-            
-            // Rimuovi eventuali virgolette all'inizio
-            if (cleanText.startsWith('"')) {
-                cleanText = cleanText.substring(1);
-            }
-            
-            const lines = cleanText.split('\n').filter(line => line.trim() !== '');
-            
-            if (lines.length < 2) {
-                console.warn("⚠️ CSV vuoto o solo intestazioni");
+        async function loadCSV(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const text = await response.text();
+                return parseCSV(text);
+            } catch (error) {
+                console.error(`Errore caricamento ${url}:`, error);
                 return [];
             }
+        }
+
+        function parseCSV(text) {
+            const lines = text.split('\n').filter(line => line.trim() !== '');
+            if (lines.length < 2) return [];
             
-            // Prendi headers
             const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
-            console.log("📝 Headers trovati:", headers);
-            
             const result = [];
             
             for (let i = 1; i < lines.length; i++) {
-                const line = lines[i];
-                if (!line.trim()) continue;
-                
-                // Parsing semplice
-                const values = parseCSVLine(line);
-                
+                const values = parseCSVLine(lines[i]);
                 const obj = {};
+                
                 headers.forEach((header, index) => {
-                    if (header) {
-                        obj[header] = values[index] || '';
-                    }
+                    if (header) obj[header] = values[index] || '';
                 });
                 
-                // Aggiungi solo se ha un titolo o contenuto
-                if (obj.titolo || obj.Titolo || obj.contenuto || obj.Contenuto) {
+                if (Object.values(obj).some(val => val && val.toString().trim() !== '')) {
                     result.push(obj);
                 }
             }
@@ -350,9 +1028,15 @@
             
             for (let i = 0; i < line.length; i++) {
                 const char = line[i];
+                const nextChar = line[i + 1];
                 
                 if (char === '"') {
-                    inQuotes = !inQuotes;
+                    if (inQuotes && nextChar === '"') {
+                        current += '"';
+                        i++;
+                    } else {
+                        inQuotes = !inQuotes;
+                    }
                 } else if (char === ',' && !inQuotes) {
                     result.push(current);
                     current = '';
@@ -365,199 +1049,358 @@
             return result.map(v => v.trim());
         }
 
-        // HOMEPAGE
+        function saveToCache() {
+            const cache = {
+                articoli: articoli.filter(a => a._local), // Salva solo articoli locali
+                timestamp: new Date().getTime()
+            };
+            localStorage.setItem(CONFIG.storageKey, JSON.stringify(cache));
+        }
+
+        // ============================================
+        // INTERFACCE
+        // ============================================
+
         function loadHome() {
             updateNav('home');
             
-            let html = '<h2>Articoli Recenti</h2>';
-            
-            if (articoli.length === 0) {
-                html += `
-                    <div class="loading">
-                        <p>❌ Nessun articolo trovato</p>
-                        <p>Controlla il tuo Google Sheets Articoli</p>
-                        <button onclick="loadData()" class="read-more" style="margin-top: 1rem;">
-                            🔄 Ricarica
-                        </button>
-                    </div>
-                `;
-            } else {
-                html += `<p>${articoli.length} articoli disponibili</p>`;
-                html += '<div class="articles-grid">';
-                
-                articoli.slice(-6).reverse().forEach(article => {
-                    const titolo = article.titolo || article.Titolo || 'Senza titolo';
-                    const categoria = article.categoria || article.Categoria || 'Generale';
-                    const contenuto = article.contenuto || article.Contenuto || '';
-                    const autore = article.autore || article.Autore || '';
-                    const data = article.data || article.Data || '';
-                    
-                    html += `
-                        <div class="article-card">
-                            <div class="article-meta">
-                                <span style="background: #3498db; color: white; padding: 0.2rem 0.5rem; border-radius: 3px; font-size: 0.8rem;">
-                                    ${categoria}
-                                </span>
-                                ${data ? `<span style="margin-left: 0.5rem;">${data}</span>` : ''}
-                            </div>
-                            <h3>${titolo}</h3>
-                            <div class="article-content">
-                                ${contenuto.substring(0, 150)}...
-                            </div>
-                            <button onclick="viewArticle(${article.id || article.ID || '0'})" class="read-more">
-                                Leggi articolo
-                            </button>
-                        </div>
-                    `;
-                });
-                
-                html += '</div>';
-            }
-            
-            document.getElementById('content').innerHTML = html;
-        }
-
-        // VIEW ARTICLE
-        function viewArticle(articleId) {
-            const article = articoli.find(a => 
-                (a.id && a.id.toString() === articleId.toString()) ||
-                (a.ID && a.ID.toString() === articleId.toString())
-            );
-            
-            if (!article) {
-                showError("Articolo non trovato");
-                return;
-            }
-            
-            const titolo = article.titolo || article.Titolo || 'Senza titolo';
-            const categoria = article.categoria || article.Categoria || '';
-            const contenuto = article.contenuto || article.Contenuto || '';
-            const autore = article.autore || article.Autore || '';
-            const data = article.data || article.Data || '';
+            const recentArticles = articoli.slice(0, 6);
+            const categories = [...new Set(articoli.map(a => a.categoria || a.Categoria).filter(Boolean))];
             
             document.getElementById('content').innerHTML = `
-                <div class="single-article">
-                    <h2>${titolo}</h2>
-                    <div style="color: #7f8c8d; margin-bottom: 2rem;">
-                        ${categoria ? `<span><strong>Categoria:</strong> ${categoria}</span>` : ''}
-                        ${autore ? `<span style="margin-left: 1rem;"><strong>Autore:</strong> ${autore}</span>` : ''}
-                        ${data ? `<span style="margin-left: 1rem;"><strong>Data:</strong> ${data}</span>` : ''}
+                <div class="dashboard">
+                    <div class="sidebar">
+                        <h3>Categorie</h3>
+                        ${categories.map(cat => `
+                            <div style="padding: 0.8rem; margin: 0.5rem 0; background: #f1f5f9; border-radius: var(--radius); cursor: pointer;" onclick="loadCategory('${cat}')">
+                                ${cat}
+                            </div>
+                        `).join('')}
+                        
+                        ${currentUser ? `
+                            <div style="margin-top: 2rem;">
+                                <button class="btn btn-block" onclick="showEditor()">+ Nuovo Articolo</button>
+                            </div>
+                        ` : ''}
                     </div>
                     
-                    <div style="line-height: 1.8; font-size: 1.1rem;">
-                        ${contenuto.split('\n').map(p => `<p>${p}</p>`).join('')}
+                    <div>
+                        <h2>Articoli Recenti</h2>
+                        ${recentArticles.length > 0 ? `
+                            <div class="articles-grid">
+                                ${recentArticles.map(article => `
+                                    <div class="article-card">
+                                        ${currentUser ? `
+                                            <div class="article-actions">
+                                                <button class="action-btn edit-btn" onclick="showEditor(${article.id || article.ID})">✏️</button>
+                                                <button class="action-btn delete-btn" onclick="deleteArticle(${article.id || article.ID})">🗑️</button>
+                                            </div>
+                                        ` : ''}
+                                        <div class="article-category">${article.categoria || article.Categoria || 'Generale'}</div>
+                                        <h3>${article.titolo || article.Titolo || 'Senza titolo'}</h3>
+                                        <div class="article-meta">
+                                            <span>${article.autore || article.Autore || 'Anonimo'}</span>
+                                            <span>${article.data || article.Data || ''}</span>
+                                        </div>
+                                        <div class="article-content">
+                                            ${truncateText(article.contenuto || article.Contenuto || '', 150)}
+                                        </div>
+                                        <button class="btn mt-2" onclick="viewArticle(${article.id || article.ID})">Leggi Articolo</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : `
+                            <div class="loading">
+                                <p>Nessun articolo disponibile</p>
+                            </div>
+                        `}
                     </div>
-                    
-                    <button onclick="loadHome()" class="read-more" style="margin-top: 2rem;">
-                        ← Torna agli articoli
-                    </button>
                 </div>
             `;
         }
 
-        // ALL ARTICLES
-        function loadAllArticles() {
+        function loadArticles() {
             updateNav('articles');
             
-            let html = '<h2>Tutti gli Articoli</h2>';
-            html += `<p>${articoli.length} articoli totali</p>`;
-            html += '<div class="articles-grid">';
-            
-            articoli.forEach(article => {
-                const titolo = article.titolo || article.Titolo || 'Senza titolo';
-                const categoria = article.categoria || article.Categoria || '';
-                const contenuto = article.contenuto || article.Contenuto || '';
-                
-                html += `
-                    <div class="article-card">
-                        ${categoria ? `<div class="article-meta">${categoria}</div>` : ''}
-                        <h3>${titolo}</h3>
-                        <div class="article-content">
-                            ${contenuto.substring(0, 120)}...
-                        </div>
-                        <button onclick="viewArticle(${article.id || article.ID || '0'})" class="read-more">
-                            Leggi articolo
-                        </button>
+            document.getElementById('content').innerHTML = `
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2>Tutti gli Articoli (${articoli.length})</h2>
+                        ${currentUser ? `
+                            <button class="btn btn-success" onclick="showEditor()">+ Nuovo Articolo</button>
+                        ` : ''}
                     </div>
-                `;
-            });
-            
-            html += '</div>';
-            document.getElementById('content').innerHTML = html;
+                    
+                    <div class="articles-grid">
+                        ${articoli.map(article => `
+                            <div class="article-card">
+                                ${currentUser ? `
+                                    <div class="article-actions">
+                                        <button class="action-btn edit-btn" onclick="showEditor(${article.id || article.ID})">✏️</button>
+                                        <button class="action-btn delete-btn" onclick="deleteArticle(${article.id || article.ID})">🗑️</button>
+                                    </div>
+                                ` : ''}
+                                <div class="article-category">${article.categoria || article.Categoria || 'Generale'}</div>
+                                <h3>${article.titolo || article.Titolo || 'Senza titolo'}</h3>
+                                <div class="article-meta">
+                                    <span>${article.autore || article.Autore || 'Anonimo'}</span>
+                                    <span>${article.data || article.Data || ''}</span>
+                                </div>
+                                <div class="article-content">
+                                    ${truncateText(article.contenuto || article.Contenuto || '', 100)}
+                                </div>
+                                <button class="btn mt-2" onclick="viewArticle(${article.id || article.ID})">Leggi Articolo</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
         }
 
-        // ABOUT
+        function loadCategories() {
+            updateNav('categories');
+            
+            const categories = [...new Set(articoli.map(a => a.categoria || a.Categoria).filter(Boolean))];
+            
+            document.getElementById('content').innerHTML = `
+                <div>
+                    <h2>Categorie</h2>
+                    <div class="stats-grid">
+                        ${categories.map(cat => {
+                            const count = articoli.filter(a => (a.categoria || a.Categoria) === cat).length;
+                            return `
+                                <div class="stat-card" onclick="loadCategory('${cat}')" style="cursor: pointer;">
+                                    <div class="stat-number">${count}</div>
+                                    <div class="stat-label">${cat}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadCategory(category) {
+            updateNav('');
+            
+            const categoryArticles = articoli.filter(a => 
+                (a.categoria || a.Categoria) === category
+            );
+            
+            document.getElementById('content').innerHTML = `
+                <div>
+                    <h2>Categoria: ${category}</h2>
+                    <p style="color: var(--gray); margin-bottom: 2rem;">${categoryArticles.length} articoli</p>
+                    
+                    <div class="articles-grid">
+                        ${categoryArticles.map(article => `
+                            <div class="article-card">
+                                <div class="article-category">${category}</div>
+                                <h3>${article.titolo || article.Titolo || 'Senza titolo'}</h3>
+                                <div class="article-meta">
+                                    <span>${article.autore || article.Autore || 'Anonimo'}</span>
+                                    <span>${article.data || article.Data || ''}</span>
+                                </div>
+                                <div class="article-content">
+                                    ${truncateText(article.contenuto || article.Contenuto || '', 150)}
+                                </div>
+                                <button class="btn mt-2" onclick="viewArticle(${article.id || article.ID})">Leggi Articolo</button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function viewArticle(articleId) {
+            const article = articoli.find(a => a.id == articleId || a.ID == articleId);
+            
+            if (!article) {
+                showNotification('Articolo non trovato', 'error');
+                return;
+            }
+            
+            document.getElementById('content').innerHTML = `
+                <div style="background: white; border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow);">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2rem;">
+                        <div>
+                            <div class="article-category">${article.categoria || article.Categoria || 'Generale'}</div>
+                            <h2>${article.titolo || article.Titolo || 'Senza titolo'}</h2>
+                            <div style="color: var(--gray); margin-top: 1rem;">
+                                <span><strong>Autore:</strong> ${article.autore || article.Autore || 'Anonimo'}</span>
+                                <span style="margin-left: 1rem;"><strong>Data:</strong> ${article.data || article.Data || ''}</span>
+                                ${article.tags || article.Tags ? `<span style="margin-left: 1rem;"><strong>Tag:</strong> ${article.tags || article.Tags}</span>` : ''}
+                            </div>
+                        </div>
+                        
+                        ${currentUser ? `
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button class="btn" onclick="showEditor(${article.id || article.ID})">✏️ Modifica</button>
+                                <button class="btn btn-danger" onclick="deleteArticle(${article.id || article.ID})">🗑️ Elimina</button>
+                            </div>
+                        ` : ''}
+                    </div>
+                    
+                    <div style="line-height: 1.8; font-size: 1.1rem;">
+                        ${formatContent(article.contenuto || article.Contenuto || '')}
+                    </div>
+                    
+                    <button class="btn mt-4" onclick="loadArticles()">← Torna agli Articoli</button>
+                </div>
+            `;
+        }
+
+        function loadDashboard() {
+            if (!currentUser) {
+                loadHome();
+                return;
+            }
+            
+            updateNav('');
+            
+            const userArticles = articoli.filter(a => a.autore === currentUser.name || a.Autore === currentUser.name);
+            
+            document.getElementById('content').innerHTML = `
+                <div class="dashboard">
+                    <div class="sidebar">
+                        <h3>Il mio Account</h3>
+                        <div style="text-align: center; margin-bottom: 2rem;">
+                            <div class="user-avatar" style="width: 80px; height: 80px; font-size: 2rem; margin: 0 auto 1rem;">
+                                ${currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase()}
+                            </div>
+                            <h3>${currentUser.name}</h3>
+                            <p style="color: var(--gray);">${currentUser.email}</p>
+                            <p style="background: ${currentUser.role === 'admin' ? '#10b981' : '#3b82f6'}; color: white; padding: 0.3rem 0.8rem; border-radius: 20px; display: inline-block; margin-top: 0.5rem;">
+                                ${currentUser.role === 'admin' ? 'Amministratore' : 'Utente'}
+                            </p>
+                        </div>
+                        
+                        <button class="btn btn-block" onclick="showEditor()">+ Nuovo Articolo</button>
+                        <button class="btn btn-block mt-1" onclick="loadArticles()">I miei Articoli</button>
+                        <button class="btn btn-danger btn-block mt-1" onclick="logout()">Esci</button>
+                    </div>
+                    
+                    <div>
+                        <h2>La mia Dashboard</h2>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">${userArticles.length}</div>
+                                <div class="stat-label">Miei Articoli</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">${articoli.length}</div>
+                                <div class="stat-label">Articoli Totali</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">${[...new Set(articoli.map(a => a.categoria || a.Categoria).filter(Boolean))].length}</div>
+                                <div class="stat-label">Categorie</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">${[...new Set(articoli.map(a => a.autore || a.Autore).filter(Boolean))].length}</div>
+                                <div class="stat-label">Autori</div>
+                            </div>
+                        </div>
+                        
+                        <h3 class="mt-4">I miei Articoli Recenti</h3>
+                        ${userArticles.length > 0 ? `
+                            <div class="articles-grid">
+                                ${userArticles.slice(0, 4).map(article => `
+                                    <div class="article-card">
+                                        <div class="article-category">${article.categoria || article.Categoria || 'Generale'}</div>
+                                        <h3>${article.titolo || article.Titolo || 'Senza titolo'}</h3>
+                                        <div class="article-content">
+                                            ${truncateText(article.contenuto || article.Contenuto || '', 100)}
+                                        </div>
+                                        <button class="btn mt-2" onclick="viewArticle(${article.id || article.ID})">Modifica</button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : `
+                            <div class="loading">
+                                <p>Non hai ancora creato articoli</p>
+                                <button class="btn mt-2" onclick="showEditor()">Crea il tuo primo articolo</button>
+                            </div>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
         function loadAbout() {
             updateNav('about');
             
             document.getElementById('content').innerHTML = `
-                <div class="single-article">
-                    <h2>Informazioni su Matle</h2>
-                    <p>Matle è un'enciclopedia informatica creata da Angelini Matteo.</p>
+                <div style="background: white; border-radius: var(--radius-lg); padding: 2.5rem; box-shadow: var(--shadow);">
+                    <h2>Matle Pro - Enciclopedia Informatica</h2>
                     
-                    <h3 style="margin-top: 2rem;">Statistiche</h3>
+                    <p style="margin-top: 1rem;">Sistema avanzato per la gestione di contenuti informatici con editor integrato e sistema di autenticazione.</p>
+                    
+                    <div class="stats-grid mt-3">
+                        <div class="stat-card">
+                            <div class="stat-number">${articoli.length}</div>
+                            <div class="stat-label">Articoli</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${[...new Set(articoli.map(a => a.categoria || a.Categoria).filter(Boolean))].length}</div>
+                            <div class="stat-label">Categorie</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${[...new Set(articoli.map(a => a.autore || a.Autore).filter(Boolean))].length}</div>
+                            <div class="stat-label">Autori</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">${users.length}</div>
+                            <div class="stat-label">Utenti</div>
+                        </div>
+                    </div>
+                    
+                    <h3 class="mt-4">Caratteristiche</h3>
                     <ul style="margin: 1rem 0 1rem 2rem;">
-                        <li>Articoli: ${articoli.length}</li>
-                        <li>Ultimo aggiornamento: ${new Date().toLocaleDateString('it-IT')}</li>
+                        <li>Editor articoli integrato</li>
+                        <li>Sistema di login/registrazione</li>
+                        <li>Gestione profilo utente</li>
+                        <li>Database Google Sheets</li>
+                        <li>Salvataggio locale degli articoli</li>
+                        <li>Interfaccia responsive</li>
+                        <li>Statistiche in tempo reale</li>
                     </ul>
                     
-                    <button onclick="loadHome()" class="read-more" style="margin-top: 2rem;">
-                        ← Torna alla Home
-                    </button>
+                    <h3 class="mt-4">Sviluppatore</h3>
+                    <p>Angelini Matteo - Versione 3.0 Pro</p>
                 </div>
             `;
         }
 
-        // SEARCH
-        function searchArticles() {
-            const query = document.getElementById('searchInput').value.toLowerCase().trim();
-            if (!query) return;
+        // ============================================
+        // UTILITY FUNCTIONS
+        // ============================================
+
+        function updateStats() {
+            const stats = {
+                articles: articoli.length,
+                categories: [...new Set(articoli.map(a => a.categoria || a.Categoria).filter(Boolean))].length,
+                authors: [...new Set(articoli.map(a => a.autore || a.Autore).filter(Boolean))].length,
+                users: users.length
+            };
             
-            const results = articoli.filter(article => {
-                const searchText = [
-                    article.titolo || article.Titolo || '',
-                    article.contenuto || article.Contenuto || '',
-                    article.categoria || article.Categoria || '',
-                    article.autore || article.Autore || ''
-                ].join(' ').toLowerCase();
-                
-                return searchText.includes(query);
-            });
-            
-            let html = `<h2>Risultati per: "${query}"</h2>`;
-            html += `<p>${results.length} articoli trovati</p>`;
-            
-            if (results.length > 0) {
-                html += '<div class="articles-grid">';
-                
-                results.forEach(article => {
-                    const titolo = article.titolo || article.Titolo || '';
-                    const contenuto = article.contenuto || article.Contenuto || '';
-                    
-                    html += `
-                        <div class="article-card">
-                            <h3>${titolo}</h3>
-                            <div class="article-content">
-                                ${contenuto.substring(0, 150)}...
-                            </div>
-                            <button onclick="viewArticle(${article.id || article.ID || '0'})" class="read-more">
-                                Leggi articolo
-                            </button>
-                        </div>
-                    `;
-                });
-                
-                html += '</div>';
-            } else {
-                html += '<p>Nessun articolo trovato.</p>';
-            }
-            
-            html += '<button onclick="loadHome()" class="read-more" style="margin-top: 2rem;">← Torna alla Home</button>';
-            
-            document.getElementById('content').innerHTML = html;
+            document.getElementById('footerStats').innerHTML = `
+                Articoli: ${stats.articles}<br>
+                Categorie: ${stats.categories}<br>
+                Autori: ${stats.authors}<br>
+                Utenti: ${stats.users}
+            `;
         }
 
-        // UTILITY
+        function updateNav(page) {
+            document.querySelectorAll('.nav-main a').forEach(link => {
+                link.classList.remove('active');
+                if (link.textContent.toLowerCase().includes(page?.toLowerCase() || '')) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
         function showLoading() {
             document.getElementById('content').innerHTML = `
                 <div class="loading">
@@ -567,35 +1410,92 @@
             `;
         }
 
-        function showError(message) {
-            document.getElementById('content').innerHTML = `
-                <div class="loading">
-                    <p style="color: #e74c3c;">❌ ${message}</p>
-                    <button onclick="loadData()" class="read-more" style="margin-top: 1rem;">
-                        🔄 Riprova
-                    </button>
-                </div>
+        function showNotification(message, type = 'info') {
+            // Crea elemento notifica
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'error' ? '#ef4444' : type === 'success' ? '#10b981' : '#3b82f6'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: var(--radius);
+                box-shadow: var(--shadow-lg);
+                z-index: 3000;
+                animation: slideIn 0.3s ease;
             `;
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Rimuovi dopo 3 secondi
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+            
+            // Aggiungi animazioni CSS
+            if (!document.getElementById('notification-styles')) {
+                const style = document.createElement('style');
+                style.id = 'notification-styles';
+                style.textContent = `
+                    @keyframes slideIn {
+                        from { transform: translateX(100%); opacity: 0; }
+                        to { transform: translateX(0); opacity: 1; }
+                    }
+                    @keyframes slideOut {
+                        from { transform: translateX(0); opacity: 1; }
+                        to { transform: translateX(100%); opacity: 0; }
+                    }
+                `;
+                document.head.appendChild(style);
+            }
         }
 
-        function updateNav(page) {
-            document.querySelectorAll('.nav-main a').forEach(link => {
-                link.classList.remove('active');
-                if (link.textContent.toLowerCase().includes(page.toLowerCase())) {
-                    link.classList.add('active');
+        function truncateText(text, maxLength) {
+            if (!text) return '';
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
+        }
+
+        function formatContent(text) {
+            if (!text) return '<p>Nessun contenuto disponibile</p>';
+            
+            // Gestisce newlines
+            return text.split('\n').map(paragraph => {
+                if (paragraph.trim()) {
+                    return `<p>${paragraph}</p>`;
+                }
+                return '';
+            }).join('');
+        }
+
+        // ============================================
+        // INIZIALIZZAZIONE
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Matle Pro - Sistema Avanzato');
+            
+            // Inizializza auth system
+            initAuth();
+            
+            // Carica dati
+            loadData();
+            
+            // Chiudi modali con ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    hideAuth();
+                    hideEditor();
                 }
             });
-        }
-
-        // INIT
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log("🚀 Matle - Enciclopedia Informatica");
-            loadData();
-        });
-
-        // Handle Enter in search
-        document.getElementById('searchInput')?.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') searchArticles();
+            
+            // Chiudi modali cliccando fuori
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'authContainer') hideAuth();
+                if (e.target.id === 'editorContainer') hideEditor();
+            });
         });
     </script>
 </body>
