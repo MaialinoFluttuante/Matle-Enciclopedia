@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Matle - Enciclopedia Informatica online creata da Angelini Matteo. Linguaggi di programmazione, algoritmi, sistemi operativi e concetti informatici.">
+    <meta name="author" content="Angelini Matteo">
+    <title>Matle - Enciclopedia Informatica</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>💻</text></svg>">
+    <style>
+        /* ====== RESET & VARIABILI ====== */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --secondary: #7c3aed;
+            --accent: #06b6d4;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+            --radius-lg: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            min-height: 100vh;
+        }
+
+        /* ====== TYPOGRAPHY ====== */
+        h1, h2, h3, h4 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 2rem; color: var(--primary); }
+        h3 { font-size: 1.5rem; color: var(--dark); }
+        h4 { font-size: 1.2rem; }
+
+        p { margin-bottom: 1rem; }
+
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        a:hover { color: var(--primary-dark); }
+
+        code {
+            background: var(--gray-light);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: var(--radius);
+            overflow-x: auto;
+            margin: 1rem 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        /* ====== LAYOUT ====== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ====== HEADER ====== */
+        .header {
+            background: white;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text h1 {
+            margin-bottom: 0.2rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .creator-badge {
+            background: var(--gray-light);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: var(--gray);
+        }
+
+        /* ====== NAVIGATION ====== */
+        .nav-main ul {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-main a {
+            display: block;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius);
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .nav-main a:hover,
+        .nav-main a.active {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* ====== SEARCH ====== */
+        .search-container {
+            flex: 1;
+            max-width: 500px;
+            margin: 0 1rem;
+        }
+
+        .search-box {
+            display: flex;
+            background: white;
+            border: 2px solid var(--gray-light);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .search-box:focus-within {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .search-box button {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 0 1.5rem;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .search-box button:hover {
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary));
+        }
+
+        /* ====== MAIN CONTENT ====== */
+        .main-content {
+            padding: 2rem 0;
+            min-height: 70vh;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 2rem;
+        }
+
+        /* ====== SIDEBAR ====== */
+        .sidebar {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 6rem;
+        }
+
+        .sidebar h3 {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar h3::before {
+            content: '📚';
+        }
+
+        .category-list {
+            list-style: none;
+        }
+
+        .category-item {
+            padding: 0.8rem 1rem;
+            margin: 0.5rem 0;
+            background: var(--gray-light);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 4px solid transparent;
+        }
+
+        .category-item:hover {
+            background: #dbeafe;
+            border-left-color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .category-count {
+            background: white;
+            color: var(--gray);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .stats {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--gray-light);
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 0.5rem 0;
+            padding: 0.5rem;
+            background: #f8fafc;
+            border-radius: var(--radius);
+        }
+
+        /* ====== ARTICLES GRID ====== */
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .article-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border-top: 4px solid var(--primary);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-top-color: var(--secondary);
+        }
+
+        .article-header {
+            margin-bottom: 1rem;
+        }
+
+        .article-category {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .article-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .article-meta {
+            color: var(--gray);
+            font-size: 0.9rem;
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .article-content {
+            flex: 1;
+            color: var(--dark);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .read-more {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            justify-content: center;
+        }
+
+        .read-more:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        /* ====== SINGLE ARTICLE VIEW ====== */
+        .single-article {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            margin-top: 1rem;
+        }
+
+        .article-header-full {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid var(--gray-light);
+        }
+
+        .article-info {
+            display: flex;
+            gap: 1rem;
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .article-body {
+            line-height: 1.7;
+        }
+
+        .article-body h3 {
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .article-body p {
+            margin-bottom: 1.2rem;
+        }
+
+        .article-body ul, .article-body ol {
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        .article-body li {
+            margin-bottom: 0.5rem;
+        }
+
+        .code-block {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .code-header {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius) var(--radius) 0 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .copy-code {
+            background: none;
+            border: none;
+            color: #90cdf4;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--gray-light);
+            color: var(--dark);
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 2rem;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .back-button:hover {
+            background: #cbd5e1;
+            transform: translateX(-5px);
+        }
+
+        /* ====== LOADING & STATES ====== */
+        .loading {
+            text-align: center;
+            padding: 4rem;
+            grid-column: 1 / -1;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--gray-light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            grid-column: 1 / -1;
+        }
+
+        .error h3 {
+            color: var(--danger);
+            margin-bottom: 1rem;
+        }
+
+        /* ====== ABOUT PAGE ====== */
+        .about-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .creator-info {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: var(--radius-lg);
+        }
+
+        .creator-avatar {
+            font-size: 4rem;
+        }
+
+        .creator-details h3 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .tech-stack {
+            margin: 2rem 0;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .tech-item {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: var(--radius);
+            border-left: 4px solid var(--primary);
+        }
+
+        /* ====== FOOTER ====== */
+        .footer {
+            background: var(--dark);
+            color: white;
+            padding: 3rem 0;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h3 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-section a {
+            color: #cbd5e1;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: white;
+            padding-left: 0.5rem;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #334155;
+            color: #94a3b8;
+            font-size: 0.9rem;
+        }
+
+        /* ====== RESPONSIVE ====== */
+        @media (max-width: 1024px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: static;
+                order: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .search-container {
+                max-width: 100%;
+                margin: 1rem 0;
+            }
+            
+            .nav-main ul {
+                justify-content: center;
+            }
+            
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .single-article {
+                padding: 1.5rem;
+            }
+            
+            .creator-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* ====== UTILITY CLASSES ====== */
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">💻</div>
+                    <div class="logo-text">
+                        <h1>Matle</h1>
+                        <p>Enciclopedia Informatica</p>
+                    </div>
+                    <div class="creator-badge">
+                        Creato da Angelini Matteo
+                    </div>
+                </div>
+
+                <nav class="nav-main">
+                    <ul>
+                        <li><a href="#" onclick="loadHome()" class="active">Home</a></li>
+                        <li><a href="#" onclick="loadAllArticles()">Articoli</a></li>
+                        <li><a href="#" onclick="loadCategories()">Categorie</a></li>
+                        <li><a href="#" onclick="loadAbout()">About</a></li>
+                    </ul>
+                </nav>
+
+                <div class="search-container">
+                    <div class="search-box">
+                        <input type="text" id="searchInput" placeholder="Cerca articoli, linguaggi, algoritmi...">
+                        <button onclick="performSearch()">🔍 Cerca</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main class="container main-content">
+        <div id="content">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <p>Caricamento enciclopedia informatica...</p>
+                <p class="mt-2" style="color: var(--gray); font-size: 0.9rem;">
+                    Collegamento al database...
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Matle</h3>
+                    <p>Enciclopedia informatica completa e gratuita. Tutti i concetti della computer science spiegati in modo semplice.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contenuti</h3>
+                    <ul>
+                        <li><a href="#" onclick="loadCategory('programmazione')">Programmazione</a></li>
+                        <li><a href="#" onclick="loadCategory('algoritmi')">Algoritmi</a></li>
+                        <li><a href="#" onclick="loadCategory('database')">Database</a></li>
+                        <li><a href="#" onclick="loadCategory('reti')">Reti</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Risorse</h3>
+                    <ul>
+                        <li><a href="#" onclick="loadAllArticles()">Tutti gli articoli</a></li>
+                        <li><a href="#" onclick="loadCategories()">Categorie</a></li>
+                        <li><a href="#" onclick="loadAbout()">About</a></li>
+                        <li><a href="https://github.com" target="_blank">GitHub</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Contatti</h3>
+                    <ul>
+                        <li>Creato da: Angelini Matteo</li>
+                        <li>Email: info@matle.it</li>
+                        <li>Licenza: MIT Open Source</li>
+                        <li>Versione: 1.0.0</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>© 2024 Matle - Enciclopedia Informatica. Tutti i diritti riservati.</p>
+                <p class="mt-1">Questo progetto è open source e utilizza Google Sheets come database.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // ============================================
+        // CONFIGURAZIONE GOOGLE SHEETS - INFORMATICA
+        // ============================================
+        const GOOGLE_SHEETS = {
+            articoli: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSujCY6DDQ2WDcJ8OfRQcJqUP7T_obac8KMCe7Oi4k14zzrj9zV5lwhryLvb7q8KqLRWxI2C4iIwtf-/pub?gid=0&single=true&output=csv",
+            categorie: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQIcNtVhlDB951QxufPk581mgRZUByqXColhlHBEF_csJbeUAJ98Lzv3tnlMn_Q-AiuQCvRv403UPLQ/pub?gid=0&single=true&output=csv",
+            autori: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTuJdqm3iA2sGWaMLmhPly5ltn8qoABw7hY2SfEw_JMHtBulSWdK0mrzhnY4d6LjH8V1aoblfSc2e0Q/pub?gid=0&single=true&output=csv"
+        };
+
+        // ============================================
+        // VARIABILI GLOBALI
+        // ============================================
+        let articoli = [];
+        let categorie = [];
+        let autori = [];
+        let currentData = null;
+
+        // ============================================
+        // FUNZIONI PRINCIPALI
+        // ============================================
+
+        // Carica tutti i dati
+        async function loadData() {
+            showLoading();
+            
+            try {
+                // Carica dati dai Google Sheets
+                const [articoliData, categorieData, autoriData] = await Promise.all([
+                    loadCSV(GOOGLE_SHEETS.articoli),
+                    loadCSV(GOOGLE_SHEETS.categorie),
+                    loadCSV(GOOGLE_SHEETS.autori)
+                ]);
+                
+                articoli = articoliData;
+                categorie = categorieData;
+                autori = autoriData;
+                currentData = 'loaded';
+                
+                // Salva in localStorage per cache (1 ora)
+                localStorage.setItem('matle_cache_informatica', JSON.stringify({
+                    articoli,
+                    categorie,
+                    autori,
+                    timestamp: new Date().getTime()
+                }));
+                
+                // Aggiorna contatori footer
+                updateCounters();
+                
+                // Carica la homepage
+                loadHome();
+                
+            } catch (error) {
+                console.error("Errore caricamento dati:", error);
+                showError("Impossibile caricare i dati. Verifica la connessione o riprova più tardi.");
+            }
+        }
+
+        // Carica CSV da URL
+        async function loadCSV(url) {
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const csvText = await response.text();
+                
+                // Controlla se il CSV è vuoto
+                if (!csvText || csvText.trim().length < 10) {
+                    return [];
+                }
+                
+                return parseCSV(csvText);
+            } catch (error) {
+                console.error(`Errore caricamento ${url}:`, error);
+                return [];
+            }
+        }
+
+        // Parser CSV
+        function parseCSV(csvText) {
+            const lines = csvText.split('\n').filter(line => line.trim() !== '');
+            if (lines.length < 2) return [];
+            
+            const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+            const result = [];
+            
+            for (let i = 1; i < lines.length; i++) {
+                const values = parseCSVLine(lines[i]);
+                const obj = {};
+                
+                headers.forEach((header, index) => {
+                    obj[header] = values[index] || '';
+                });
+                
+                result.push(obj);
+            }
+            
+            return result;
+        }
+
+        // Parser CSV avanzato (gestisce virgole nei campi)
+        function parseCSVLine(line) {
+            const result = [];
+            let current = '';
+            let inQuotes = false;
+            
+            for (let i = 0; i < line.length; i++) {
+                const char = line[i];
+                
+                if (char === '"') {
+                    inQuotes = !inQuotes;
+                } else if (char === ',' && !inQuotes) {
+                    result.push(current.trim());
+                    current = '';
+                } else {
+                    current += char;
+                }
+            }
+            
+            result.push(current.trim());
+            return result;
+        }
+
+        // Homepage
+        function loadHome() {
+            if (!currentData) return loadData();
+            
+            updateActiveNav('home');
+            const featuredArticles = articoli.slice(0, 8);
+            
+            let categoriesHtml = '';
+            categorie.forEach(cat => {
+                const count = articoli.filter(a => a.categoria === cat.id).length;
+                categoriesHtml += `
+                    <li class="category-item" onclick="loadCategory('${cat.id}')">
+                        <span>${cat.nome}</span>
+                        <span class="category-count">${count}</span>
+                    </li>
+                `;
+            });
+            
+            document.getElementById('content').innerHTML = `
+                <div class="grid-container">
+                    <aside class="sidebar">
+                        <h3>Categorie</h3>
+                        <ul class="category-list">
+                            ${categoriesHtml}
+                        </ul>
+                        
+                        <div class="stats">
+                            <h3>Statistiche</h3>
+                            <div class="stat-item">
+                                <span>Articoli totali:</span>
+                                <strong>${articoli.length}</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Categorie:</span>
+                                <strong>${categorie.length}</strong>
+                            </div>
+                            <div class="stat-item">
+                                <span>Autori:</span>
+                                <strong>${autori.length}</strong>
+                            </div>
+                        </div>
+                    </aside>
+                    
+                    <div>
+                        <h2>Articoli in Evidenza</h2>
+                        <p class="mb-3" style="color: var(--gray);">Scopri i concetti fondamentali dell'informatica</p>
+                        
+                        <div class="articles-grid">
+                            ${featuredArticles.map(article => `
+                                <div class="article-card">
+                                    <div class="article-header">
+                                        <span class="article-category">${getCategoryName(article.categoria)}</span>
+                                        <h3>${article.titolo}</h3>
+                                    </div>
+                                    <div class="article-meta">
+                                        <span>${article.autore}</span>
+                                        <span>${formatDate(article.data)}</span>
+                                    </div>
+                                    <div class="article-content">
+                                        ${truncateText(article.contenuto || 'Nessun contenuto disponibile', 200)}
+                                    </div>
+                                    <button onclick="loadArticle(${article.id})" class="read-more">
+                                        📖 Leggi articolo
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="mt-4" style="text-align: center;">
+                            <button onclick="loadAllArticles()" class="read-more">
+                                👁️ Vedi tutti gli articoli
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Carica articolo singolo
+        function loadArticle(articleId) {
+            if (!currentData) return loadData();
+            
+            updateActiveNav('');
+            const article = articoli.find(a => a.id == articleId);
+            if (!article) return showError("Articolo non trovato");
+            
+            const authorInfo = autori.find(a => a.nome === article.autore);
+            const categoryInfo = categorie.find(c => c.id === article.categoria);
+            
+            document.getElementById('content').innerHTML = `
+                <div class="single-article">
+                    <div class="article-header-full">
+                        <span class="article-category">${getCategoryName(article.categoria)}</span>
+                        <h2>${article.titolo}</h2>
+                        <div class="article-info">
+                            <span><strong>Autore:</strong> ${article.autore || 'Sconosciuto'}</span>
+                            <span><strong>Data:</strong> ${formatDate(article.data)}</span>
+                            <span><strong>Categoria:</strong> ${categoryInfo ? categoryInfo.nome : article.categoria}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="article-body">
+                        ${formatArticleContent(article.contenuto)}
+                    </div>
+                    
+                    ${authorInfo ? `
+                        <div class="mt-4" style="background: #f0f9ff; padding: 1.5rem; border-radius: var(--radius);">
+                            <h4>👨‍💻 Informazioni sull'autore</h4>
+                            <p><strong>${authorInfo.nome}</strong></p>
+                            <p>${authorInfo.bio || 'Nessuna biografia disponibile'}</p>
+                            ${authorInfo.email ? `<p>Email: ${authorInfo.email}</p>` : ''}
+                        </div>
+                    ` : ''}
+                    
+                    <button onclick="loadHome()" class="back-button">
+                        ← Torna alla Home
+                    </button>
+                </div>
+            `;
+            
+            // Inizializza copia codice
+            initCodeCopyButtons();
+        }
+
+        // Carica categoria
+        function loadCategory(categoryId) {
+            if (!currentData) return loadData();
+            
+            updateActiveNav('');
+            const categoryArticles = articoli.filter(a => a.categoria === categoryId);
+            const category = categorie.find(c => c.id === categoryId);
+            
+            document.getElementById('content').innerHTML = `
+                <div>
+                    <h2>${category ? category.nome : 'Categoria'} 
+                        <span style="font-size: 1rem; color: var(--gray);">(${categoryArticles.length} articoli)</span>
+                    </h2>
+                    
+                    ${category && category.descrizione ? `
+                        <p style="color: var(--gray); margin-bottom: 2rem;">${category.descrizione}</p>
+                    ` : ''}
+                    
+                    ${categoryArticles.length > 0 ? `
+                        <div class="articles-grid">
+                            ${categoryArticles.map(article => `
+                                <div class="article-card">
+                                    <div class="article-header">
+                                        <span class="article-category">${getCategoryName(article.categoria)}</span>
+                                        <h3>${article.titolo}</h3>
+                                    </div>
+                                    <div class="article-meta">
+                                        <span>${article.autore}</span>
+                                        <span>${formatDate(article.data)}</span>
+                                    </div>
+                                    <div class="article-content">
+                                        ${truncateText(article.contenuto || '', 200)}
+                                    </div>
+                                    <button onclick="loadArticle(${article.id})" class="read-more">
+                                        Leggi articolo
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <div class="error">
+                            <p>Nessun articolo disponibile in questa categoria.</p>
+                            <button onclick="loadHome()" class="read-more mt-2">
+                                ← Torna alla Home
+                            </button>
+                        </div>
+                    `}
+                    
+                    ${categoryArticles.length > 0 ? `
+                        <div class="mt-4" style="text-align: center;">
+                            <button onclick="loadHome()" class="back-button">
+                                ← Torna alla Home
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Tutti gli articoli
+        function loadAllArticles() {
+            if (!currentData) return loadData();
+            
+            updateActiveNav('articles');
+            document.getElementById('content').innerHTML = `
+                <div>
+                    <h2>Tutti gli Articoli <span style="font-size: 1rem; color: var(--gray);">(${articoli.length})</span></h2>
+                    <p class="mb-3" style="color: var(--gray);">Esplora tutti gli articoli disponibili nell'enciclopedia</p>
+                    
+                    <div class="articles-grid">
+                        ${articoli.map(article => `
+                            <div class="article-card">
+                                <div class="article-header">
+                                    <span class="article-category">${getCategoryName(article.categoria)}</span>
+                                    <h3>${article.titolo}</h3>
+                                </div>
+                                <div class="article-meta">
+                                    <span>${article.autore}</span>
+                                    <span>${formatDate(article.data)}</span>
+                                </div>
+                                <div class="article-content">
+                                    ${truncateText(article.contenuto || '', 150)}
+                                </div>
+                                <button onclick="loadArticle(${article.id})" class="read-more">
+                                    Leggi articolo
+                                </button>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Categorie
+        function loadCategories() {
+            if (!currentData) return loadData();
+            
+            updateActiveNav('categories');
+            document.getElementById('content').innerHTML = `
+                <div>
+                    <h2>Categorie</h2>
+                    <p class="mb-3" style="color: var(--gray);">Esplora le categorie dell'enciclopedia informatica</p>
+                    
+                    <div class="articles-grid">
+                        ${categorie.map(cat => {
+                            const count = articoli.filter(a => a.categoria === cat.id).length;
+                            return `
+                                <div class="article-card" onclick="loadCategory('${cat.id}')" style="cursor: pointer;">
+                                    <h3>${cat.nome}</h3>
+                                    <div class="article-content">
+                                        ${cat.descrizione || 'Nessuna descrizione disponibile'}
+                                    </div>
+                                    <div class="mt-2">
+                                        <span class="category-count">${count} articoli</span>
+                                    </div>
+                                    <button onclick="loadCategory('${cat.id}')" class="read-more mt-2">
+                                        Esplora categoria
+                                    </button>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        // About
+        function loadAbout() {
+            updateActiveNav('about');
+            document.getElementById('content').innerHTML = `
+                <div class="about-content">
+                    <h2>About Matle</h2>
+                    
+                    <p><strong>Matle</strong> è un'enciclopedia informatica online creata da <strong>Angelini Matteo</strong> con l'obiettivo di fornire una risorsa completa e accessibile per studenti, sviluppatori e appassionati di informatica.</p>
+                    
+                    <div class="creator-info">
+                        <div class="creator-avatar">👨‍💻</div>
+                        <div class="creator-details">
+                            <h3>Angelini Matteo</h3>
+                            <p>Studente appassionato di informatica e sviluppo web. Creatore di Matle con l'obiettivo di condividere conoscenza in modo gratuito e accessibile a tutti.</p>
+                            <p class="mt-1"><strong>Slogan:</strong> "La conoscenza informatica dovrebbe essere libera e accessibile a tutti"</p>
+                        </div>
+                    </div>
+                    
+                    <h3>📚 Obiettivo del Progetto</h3>
+                    <p>Matle nasce come progetto personale per creare una risorsa educativa che copra tutti gli aspetti dell'informatica, dalla teoria alla pratica, con spiegazioni chiare ed esempi concreti.</p>
+                    
+                    <div class="tech-stack">
+                        <h3>🛠️ Tecnologie Utilizzate</h3>
+                        <div class="tech-grid">
+                            <div class="tech-item">
+                                <strong>Frontend</strong>
+                                <p>HTML5, CSS3, JavaScript</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Database</strong>
+                                <p>Google Sheets API</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Hosting</strong>
+                                <p>GitHub Pages / Statico</p>
+                            </div>
+                            <div class="tech-item">
+                                <strong>Design</strong>
+                                <p>CSS Personalizzato</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>📈 Statistiche</h3>
+                    <div class="stats" style="background: #f8fafc; padding: 1.5rem; border-radius: var(--radius);">
+                        <div class="stat-item">
+                            <span>Articoli pubblicati:</span>
+                            <strong>${articoli.length || 'Caricamento...'}</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>Categorie:</span>
+                            <strong>${categorie.length || 'Caricamento...'}</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>Autori:</span>
+                            <strong>${autori.length || 'Caricamento...'}</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>Ultimo aggiornamento:</span>
+                            <strong>${new Date().toLocaleDateString('it-IT')}</strong>
+                        </div>
+                    </div>
+                    
+                    <h3 class="mt-4">🤝 Contribuire</h3>
+                    <p>Matle NON è un progetto open source. Se vuoi contribuire:</p>
+                    <ul>
+                        <li>Suggerisci nuovi articoli</li>
+                        <li>Segnala errori o imprecisioni</li>
+                        <li>Migliora le spiegazioni esistenti</li>
+                        <li>Aggiungi esempi di codice</li>
+                    </ul>
+                    
+                    <button onclick="loadHome()" class="back-button mt-3">
+                        ← Torna alla Home
+                    </button>
+                </div>
+            `;
+        }
+
+        // Ricerca
+        function performSearch() {
+            if (!currentData) return loadData();
+            
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            if (!query) return;
+            
+            updateActiveNav('');
+            const results = articoli.filter(article => 
+                (article.titolo && article.titolo.toLowerCase().includes(query)) ||
+                (article.contenuto && article.contenuto.toLowerCase().includes(query)) ||
+                (article.categoria && article.categoria.toLowerCase().includes(query)) ||
+                (article.autore && article.autore.toLowerCase().includes(query))
+            );
+            
+            document.getElementById('content').innerHTML = `
+                <div>
+                    <h2>Risultati della ricerca</h2>
+                    <p style="color: var(--gray); margin-bottom: 2rem;">
+                        "${query}" - Trovati ${results.length} articoli
+                    </p>
+                    
+                    ${results.length > 0 ? `
+                        <div class="articles-grid">
+                            ${results.map(article => `
+                                <div class="article-card">
+                                    <div class="article-header">
+                                        <span class="article-category">${getCategoryName(article.categoria)}</span>
+                                        <h3>${highlightText(article.titolo, query)}</h3>
+                                    </div>
+                                    <div class="article-meta">
+                                        <span>${article.autore}</span>
+                                        <span>${formatDate(article.data)}</span>
+                                    </div>
+                                    <div class="article-content">
+                                        ${highlightText(truncateText(article.contenuto || '', 200), query)}
+                                    </div>
+                                    <button onclick="loadArticle(${article.id})" class="read-more">
+                                        Leggi articolo
+                                    </button>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : `
+                        <div class="error">
+                            <p>Nessun articolo trovato per "${query}". Prova con termini diversi.</p>
+                            <button onclick="loadHome()" class="read-more mt-2">
+                                ← Torna alla Home
+                            </button>
+                        </div>
+                    `}
+                    
+                    ${results.length > 0 ? `
+                        <div class="mt-4" style="text-align: center;">
+                            <button onclick="loadHome()" class="back-button">
+                                ← Torna alla Home
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // ============================================
+        // FUNZIONI DI SUPPORTO
+        // ============================================
+
+        function getCategoryName(categoryId) {
+            const cat = categorie.find(c => c.id === categoryId);
+            return cat ? cat.nome : categoryId;
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return 'Data sconosciuta';
+            try {
+                return new Date(dateString).toLocaleDateString('it-IT');
+            } catch {
+                return dateString;
+            }
+        }
+
+        function truncateText(text, maxLength) {
+            if (!text) return '';
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
+        }
+
+        function highlightText(text, query) {
+            if (!text || !query) return text;
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<mark style="background: #ffeb3b; padding: 0.1rem 0.2rem; border-radius: 2px;">$1</mark>');
+        }
+
+        function formatArticleContent(content) {
+            if (!content) return '<p>Contenuto non disponibile</p>';
+            
+            // Sostituisci blocchi di codice
+            let formatted = content.replace(/```(\w+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+                const language = lang || 'text';
+                return `
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>${language}</span>
+                            <button class="copy-code" onclick="copyCode(this)">Copia</button>
+                        </div>
+                        <pre><code>${code.trim()}</code></pre>
+                    </div>
+                `;
+            });
+            
+            // Sostituisci codice inline
+            formatted = formatted.replace(/`([^`]+)`/g, '<code>$1</code>');
+            
+            // Sostituisci newline con paragrafi
+            formatted = formatted.split('\n\n').map(para => {
+                if (para.trim().startsWith('# ')) {
+                    return `<h3>${para.trim().substring(2)}</h3>`;
+                } else if (para.trim().startsWith('## ')) {
+                    return `<h4>${para.trim().substring(3)}</h4>`;
+                } else if (para.trim().startsWith('- ')) {
+                    const items = para.trim().split('\n- ').map(item => 
+                        `<li>${item.replace('- ', '')}</li>`
+                    ).join('');
+                    return `<ul>${items}</ul>`;
+                } else if (para.trim().startsWith('1. ')) {
+                    const items = para.trim().split('\n1. ').map((item, i) => 
+                        `<li>${item.replace(/^\d+\.\s*/, '')}</li>`
+                    ).join('');
+                    return `<ol>${items}</ol>`;
+                } else if (para.trim()) {
+                    return `<p>${para.trim()}</p>`;
+                }
+                return '';
+            }).join('');
+            
+            return formatted;
+        }
+
+        function initCodeCopyButtons() {
+            setTimeout(() => {
+                document.querySelectorAll('.copy-code').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const code = this.closest('.code-block').querySelector('code').textContent;
+                        navigator.clipboard.writeText(code).then(() => {
+                            const original = this.textContent;
+                            this.textContent = 'Copiato!';
+                            setTimeout(() => this.textContent = original, 2000);
+                        });
+                    });
+                });
+            }, 100);
+        }
+
+        function copyCode(button) {
+            const code = button.closest('.code-block').querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const original = button.textContent;
+                button.textContent = 'Copiato!';
+                setTimeout(() => button.textContent = original, 2000);
+            });
+        }
+
+        function showLoading() {
+            document.getElementById('content').innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Caricamento enciclopedia informatica...</p>
+                </div>
+            `;
+        }
+
+        function showError(message) {
+            document.getElementById('content').innerHTML = `
+                <div class="error">
+                    <h3>❌ Errore</h3>
+                    <p>${message}</p>
+                    <button onclick="loadData()" class="read-more mt-2">
+                        Riprova
+                    </button>
+                </div>
+            `;
+        }
+
+        function updateActiveNav(page) {
+            document.querySelectorAll('.nav-main a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            if (page) {
+                const activeLink = document.querySelector(`.nav-main a[onclick*="${page}"]`);
+                if (activeLink) activeLink.classList.add('active');
+            }
+        }
+
+        function updateCounters() {
+            document.querySelectorAll('#articleCount').forEach(el => {
+                el.textContent = articoli.length;
+            });
+            document.querySelectorAll('#categoryCount').forEach(el => {
+                el.textContent = categorie.length;
+            });
+        }
+
+        // ============================================
+        // INIZIALIZZAZIONE
+        // ============================================
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Controlla cache
+            try {
+                const cache = localStorage.getItem('matle_cache_informatica');
+                if (cache) {
+                    const data = JSON.parse(cache);
+                    const cacheAge = new Date().getTime() - data.timestamp;
+                    const maxAge = 60 * 60 * 1000; // 1 ora
+                    
+                    if (cacheAge < maxAge) {
+                        articoli = data.articoli || [];
+                        categorie = data.categorie || [];
+                        autori = data.autori || [];
+                        currentData = 'cached';
+                        
+                        updateCounters();
+                        loadHome();
+                        return;
+                    }
+                }
+            } catch (e) {
+                console.log("Cache non valida");
+            }
+            
+            // Carica dati freschi
+            loadData();
+        });
+
+        // Gestione ricerca con Enter
+        document.getElementById('searchInput')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') performSearch();
+        });
+    </script>
+</body>
+</html>
