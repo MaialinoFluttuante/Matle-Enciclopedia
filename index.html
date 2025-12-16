@@ -1,92 +1,57 @@
 <!DOCTYPE html>
-<html lang="it">
-<head>
-    <meta charset="UTF-8">
-    <title>Matle - Debug</title>
-    <style>
-        body { font-family: Arial; padding: 20px; }
-        .success { color: green; }
-        .error { color: red; }
-        .warning { color: orange; }
-        pre { background: #f5f5f5; padding: 10px; }
-    </style>
-</head>
+<html>
+<head><title>Test Finale</title></head>
 <body>
-    <h1>🔧 Matle - Debug Tool</h1>
-    <div id="output"></div>
+    <h1>Test Connessione Fogli</h1>
+    <div id="result"></div>
     
     <script>
-        const GOOGLE_SHEETS = {
+        const sheets = {
             articoli: "https://docs.google.com/spreadsheets/d/e/2PACX-1vSujCY6DDQ2WDcJ8OfRQcJqUP7T_obac8KMCe7Oi4k14zzrj9zV5lwhryLvb7q8KqLRWxI2C4iIwtf-/pub?gid=0&single=true&output=csv",
             categorie: "https://docs.google.com/spreadsheets/d/e/2PACX-1vQIcNtVhlDB951QxufPk581mgRZUByqXColhlHBEF_csJbeUAJ98Lzv3tnlMn_Q-AiuQCvRv403UPLQ/pub?gid=0&single=true&output=csv",
             autori: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTuJdqm3iA2sGWaMLmhPly5ltn8qoABw7hY2SfEw_JMHtBulSWdK0mrzhnY4d6LjH8V1aoblfSc2e0Q/pub?gid=0&single=true&output=csv"
         };
 
-        async function testAll() {
-            const output = document.getElementById('output');
-            output.innerHTML = '<h2>🧪 Test in corso...</h2>';
-            
-            for (const [name, url] of Object.entries(GOOGLE_SHEETS)) {
-                output.innerHTML += `<h3>📊 Test: ${name}</h3>`;
-                output.innerHTML += `<p>URL: <code>${url}</code></p>`;
+        async function testSheet(name, url) {
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                const lines = text.split('\n');
                 
-                try {
-                    const response = await fetch(url);
-                    const text = await response.text();
-                    
-                    if (!response.ok) {
-                        output.innerHTML += `<p class="error">❌ HTTP Error: ${response.status}</p>`;
-                        continue;
-                    }
-                    
-                    if (!text || text.trim().length < 10) {
-                        output.innerHTML += `<p class="warning">⚠️ CSV quasi vuoto (${text.length} caratteri)</p>`;
-                        output.innerHTML += `<pre>${text}</pre>`;
-                    } else {
-                        output.innerHTML += `<p class="success">✅ OK! ${text.length} caratteri ricevuti</p>`;
-                        
-                        // Mostra prime righe
-                        const lines = text.split('\n').slice(0, 5);
-                        output.innerHTML += `<h4>Prime 5 righe:</h4><pre>${lines.join('\n')}</pre>`;
-                        
-                        // Parsing test
-                        const data = parseCSV(text);
-                        output.innerHTML += `<p>📈 Righe parseate: ${data.length}</p>`;
-                        if (data.length > 0) {
-                            output.innerHTML += `<p>Prima riga: ${JSON.stringify(data[0])}</p>`;
-                        }
-                    }
-                } catch (error) {
-                    output.innerHTML += `<p class="error">❌ Fetch Error: ${error.message}</p>`;
+                return {
+                    name,
+                    success: true,
+                    lines: lines.length,
+                    firstLine: lines[0],
+                    sample: lines.slice(0, 3).join('<br>')
+                };
+            } catch (error) {
+                return { name, success: false, error: error.message };
+            }
+        }
+
+        async function runTests() {
+            const results = await Promise.all(
+                Object.entries(sheets).map(([name, url]) => testSheet(name, url))
+            );
+            
+            let html = '<ul>';
+            results.forEach(result => {
+                html += `<li><h3>${result.name}</h3>`;
+                if (result.success) {
+                    html += `<p>✅ <strong>${result.lines} righe</strong></p>`;
+                    html += `<p><small>${result.sample}</small></p>`;
+                } else {
+                    html += `<p>❌ Errore: ${result.error}</p>`;
                 }
-                
-                output.innerHTML += '<hr>';
-            }
+                html += '</li>';
+            });
+            html += '</ul>';
+            
+            document.getElementById('result').innerHTML = html;
         }
-
-        function parseCSV(csvText) {
-            const lines = csvText.split('\n').filter(line => line.trim() !== '');
-            if (lines.length < 2) return [];
-            
-            const headers = lines[0].split(',').map(h => h.trim());
-            const result = [];
-            
-            for (let i = 1; i < lines.length; i++) {
-                const values = lines[i].split(',').map(v => v.trim());
-                const obj = {};
-                
-                headers.forEach((header, index) => {
-                    obj[header] = values[index] || '';
-                });
-                
-                result.push(obj);
-            }
-            
-            return result;
-        }
-
-        // Avvia test
-        testAll();
+        
+        runTests();
     </script>
 </body>
 </html>
